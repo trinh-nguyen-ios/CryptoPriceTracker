@@ -1,0 +1,20 @@
+{
+  "code": "1",
+  "data": [
+    { "id": 1, "name": "BTC", "usd": 88047.57, "tags": ["withdrawal", "deposit"] },
+    { "id": 2, "name": "ETH", "usd": 3233.41, "tags": ["deposit"] },
+    { "id": 3, "name": "USDT", "usd": 1.0, "tags": ["withdrawal"] },
+    { "id": 4, "name": "BNB", "usd": 614.96, "tags": ["deposit", "withdrawal"] },
+    { "id": 5, "name": "XRP", "usd": 0.68, "tags": ["deposit"] },
+    { "id": 6, "name": "ADA", "usd": 0.55, "tags": ["withdrawal"] },
+    { "id": 7, "name": "DOGE", "usd": 0.39, "tags": ["deposit", "withdrawal"] },
+    { "id": 8, "name": "SOL", "usd": 207.04, "tags": ["deposit"] },
+    { "id": 9, "name": "DOT", "usd": 5.17, "tags": ["withdrawal"] },
+    { "id": 10, "name": "LTC", "usd": 74.94, "tags": ["deposit"] },
+    { "id": 11, "name": "AVAX", "usd": 32.99, "tags": ["deposit", "withdrawal"] },
+    { "id": 12, "name": "UNI", "usd": 8.69, "tags": ["deposit"] },
+    { "id": 13, "name": "LINK", "usd": 13.66, "tags": ["withdrawal"] },
+    { "id": 14, "name": "MATIC", "usd": 0.72, "tags": ["deposit"] },
+    { "id": 15, "name": "ATOM", "usd": 5.56, "tags": ["deposit"] }
+  ]
+}
