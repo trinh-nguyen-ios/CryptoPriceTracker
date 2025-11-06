@@ -35,7 +35,7 @@ extension PriceListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CryptoCell", for: indexPath)
-        cell.textLabel?.text = priceList[indexPath.row].name + priceList[indexPath.row].usd.description
+        cell.textLabel?.text = String(format: "Code: %@ -- Price: %@ USD", arguments: [priceList[indexPath.row].name,  priceList[indexPath.row].usd.description])
         return cell
     }
     
