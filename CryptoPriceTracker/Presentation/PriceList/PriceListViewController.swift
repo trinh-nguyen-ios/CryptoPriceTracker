@@ -12,7 +12,7 @@ final class PriceListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var priceList: [UsdCryptoDTO] = []
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         configUI()
