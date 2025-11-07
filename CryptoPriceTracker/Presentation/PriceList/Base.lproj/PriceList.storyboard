@@ -17,31 +17,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="QEP-k0-999">
-                                <rect key="frame" x="0.0" y="127" width="393" height="691"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="NBD-Ky-lsl">
-                                <rect key="frame" x="0.0" y="59" width="393" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="kZK-Hd-2S8"/>
-                                </constraints>
-                                <textInputTraits key="textInputTraits"/>
-                            </searchBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="QEP-k0-999" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="3uC-e5-CDm"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="QEP-k0-999" secondAttribute="bottom" id="41g-jd-80T"/>
-                            <constraint firstItem="NBD-Ky-lsl" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="BTT-zy-jN8"/>
-                            <constraint firstItem="NBD-Ky-lsl" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="IGP-lF-03l"/>
-                            <constraint firstItem="QEP-k0-999" firstAttribute="top" secondItem="NBD-Ky-lsl" secondAttribute="bottom" constant="24" id="OtB-gJ-haM"/>
-                            <constraint firstItem="NBD-Ky-lsl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Tiq-uS-P1O"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="QEP-k0-999" secondAttribute="trailing" id="aMx-Oq-aBG"/>
+                            <constraint firstItem="QEP-k0-999" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="oPX-vz-gvy"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="searchBar" destination="NBD-Ky-lsl" id="GO4-DZ-Q5g"/>
                         <outlet property="tableView" destination="QEP-k0-999" id="L7w-Og-ble"/>
                     </connections>
                 </viewController>

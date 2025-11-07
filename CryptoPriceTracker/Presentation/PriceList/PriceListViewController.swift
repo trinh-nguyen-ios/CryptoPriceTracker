@@ -11,10 +11,9 @@ import RxSwift
 final class PriceListViewController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
     
     // MARK: Properties
-    var viewModel: PriceListViewModel
+    var viewModel: PriceListViewModel?
     var priceList: [Crypto] = []
     let disposeBag = DisposeBag()
     
@@ -28,7 +27,6 @@ final class PriceListViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        self.viewModel = PriceListViewModel(useCase: FetchPriceListUseCase(userDefault: .standard))
         super.init(coder: coder)
     }
     
@@ -39,20 +37,17 @@ final class PriceListViewController: UIViewController {
     }
     
     private func configUI() {
+        navigationController?.navigationBar.isHidden = false
+        title = "Price list"
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CryptoCell")
+        tableView.register(UINib(nibName: "PriceListTableViewCell", bundle: nil), forCellReuseIdentifier: "CryptoCell")
     }
     
     private func bindViewModel() {
-        let input = PriceListViewModel.Input(searchTrigger:
-                                                Observable
-                                                    .merge(
-                                                        Observable.just(""),
-                                                        searchBar.rx.text.orEmpty.asObservable()
-                                                    ))
+        let input = PriceListViewModel.Input(loadTrigger: Observable.just(()))
         
-        let output = viewModel.transForm(input: input)
+        guard let output = viewModel?.transForm(input: input) else { return }
         
         output.cryptoList.asObservable()
             .subscribe(onNext: { cryptoList in
@@ -81,9 +76,12 @@ extension PriceListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CryptoCell", for: indexPath)
-        cell.textLabel?.text = String(format: "Code: %@ -- Price: %@ USD", arguments: [priceList[indexPath.row].name,  priceList[indexPath.row].usd.description])
-        return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CryptoCell", for: indexPath) as? PriceListTableViewCell
+        let name = priceList[indexPath.row].name
+        let price = priceList[indexPath.row].usd.description
+        
+        cell?.set(name: name, price: price)
+        return cell ?? UITableViewCell()
     }
 }
 

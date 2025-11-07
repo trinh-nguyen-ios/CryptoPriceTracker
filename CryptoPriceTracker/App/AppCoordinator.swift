@@ -21,8 +21,8 @@ class AppCoordinator {
     func toPriceList() {
         let viewModel = PriceListViewModel(useCase: FetchPriceListUseCase(userDefault: .standard))
         
-        let viewController = PriceListViewController.instantiate(viewModel: viewModel)
-        window.rootViewController = viewController
+        guard let viewController = PriceListViewController.instantiate(viewModel: viewModel) else { return }
+        window.rootViewController = UINavigationController(rootViewController: viewController)
         window.makeKeyAndVisible()
     }
 }

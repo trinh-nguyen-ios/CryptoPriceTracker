@@ -11,7 +11,7 @@ import RxCocoa
 
 class PriceListViewModel {
     struct Input {
-        let searchTrigger: Observable<String>
+        let loadTrigger: Observable<Void>
     }
     
     struct Output {
@@ -31,12 +31,10 @@ class PriceListViewModel {
         let loadingSubject = PublishSubject<Bool>()
         
         
-        let cryptoList = input.searchTrigger
-            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
+        let cryptoList = input.loadTrigger
             .flatMapLatest { query -> Observable<[Crypto]>  in
                 loadingSubject.onNext(true)
-                return self.useCase.searchCrypto(query: query)
+                return self.useCase.excute()
                     .do(onNext: {_ in
                         loadingSubject.onNext(false)
                     }, onError: { error in
