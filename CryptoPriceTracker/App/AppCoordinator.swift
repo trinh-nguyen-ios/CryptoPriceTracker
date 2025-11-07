@@ -19,9 +19,9 @@ class AppCoordinator {
     }
     
     func toPriceList() {
-        let storyboard = UIStoryboard(name: "PriceList", bundle: nil)
+        let viewModel = PriceListViewModel(useCase: FetchPriceListUseCase(userDefault: .standard))
         
-        let viewController = storyboard.instantiateInitialViewController() as? PriceListViewController
+        let viewController = PriceListViewController.instantiate(viewModel: viewModel)
         window.rootViewController = viewController
         window.makeKeyAndVisible()
     }

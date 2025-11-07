@@ -7,20 +7,19 @@
 
 import Foundation
 
-enum Utils {
-    
-    static func loadJSON<T: Decodable>(filename: String) -> T {
-        guard let url = Bundle.main.url(forResource: filename, withExtension: "json") else {
-            fatalError("❌ Couldn't find \(filename).json in bundle.")
-        }
-        
+protocol JSONLoader {
+    func loadJSON<T: Decodable>(filename: String) -> T?
+}
+
+class BundleJSONLoader: JSONLoader {
+    func loadJSON<T: Decodable>(filename: String) -> T? {
+        guard let url = Bundle.main.url(forResource: filename, withExtension: "json") else { return nil }
         do {
             let data = try Data(contentsOf: url)
-            let decoder = JSONDecoder()
-            return try decoder.decode(T.self, from: data)
+            return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            fatalError("❌ Failed to decode \(filename).json: \(error)")
+            print(error)
+            return nil
         }
     }
-    
 }
