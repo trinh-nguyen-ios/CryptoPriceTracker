@@ -8,10 +8,12 @@ target 'CryptoPriceTracker' do
   # Pods for CryptoPriceTracker
 	pod 'RxSwift'
 	pod 'RxCocoa'
-
+  
   target 'CryptoPriceTrackerTests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'RxBlocking'
+    pod 'RxTest'
   end
 
   target 'CryptoPriceTrackerUITests' do

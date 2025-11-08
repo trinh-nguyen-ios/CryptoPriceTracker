@@ -1,18 +1,18 @@
 //
-//  FetchPriceListUseCase.swift
+//  FetchAllPriceUseCase.swift
 //  CryptoPriceTracker
 //
-//  Created by Nguyen The Trinh on 7/11/25.
+//  Created by Nguyen The Trinh on 8/11/25.
 //
 
 import Foundation
 import RxSwift
 
-protocol FetchUSDPriceListUseCaseType {
+protocol FetchAllPriceUseCaseType {
     func execute() -> Observable<[Crypto]>
 }
 
-class FetchUSDPriceListUseCase: FetchUSDPriceListUseCaseType {
+class FetchAllPriceUseCase: FetchAllPriceUseCaseType {
     let repository: CryptoRepository
     
     init(repository: CryptoRepository) {
@@ -20,6 +20,6 @@ class FetchUSDPriceListUseCase: FetchUSDPriceListUseCaseType {
     }
     
     func execute() -> Observable<[Crypto]> {
-        return repository.fetchUsdPrices()
+        repository.fetchAllPrices()
     }
 }

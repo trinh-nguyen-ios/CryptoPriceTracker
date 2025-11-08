@@ -20,9 +20,9 @@ class PriceListViewModel {
         let isLoading: Driver<Bool>
     }
     
-    let useCase: FetchPriceListUseCaseType
+    let useCase: FetchUSDPriceListUseCaseType
     
-    init(useCase: FetchPriceListUseCaseType) {
+    init(useCase: FetchUSDPriceListUseCaseType) {
         self.useCase = useCase
     }
     
@@ -34,7 +34,7 @@ class PriceListViewModel {
         let cryptoList = input.loadTrigger
             .flatMapLatest { query -> Observable<[Crypto]>  in
                 loadingSubject.onNext(true)
-                return self.useCase.excute()
+                return self.useCase.execute()
                     .do(onNext: {_ in
                         loadingSubject.onNext(false)
                     }, onError: { error in

@@ -19,7 +19,7 @@ class AppCoordinator {
     }
     
     func toPriceList() {
-        let viewModel = PriceListViewModel(useCase: FetchPriceListUseCase(userDefault: .standard))
+        let viewModel = PriceListViewModel(useCase: FetchUSDPriceListUseCase(repository: PriceListRepositoryImpl()))
         
         guard let viewController = PriceListViewController.instantiate(viewModel: viewModel) else { return }
         window.rootViewController = UINavigationController(rootViewController: viewController)
