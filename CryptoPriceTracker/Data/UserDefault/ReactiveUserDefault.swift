@@ -27,15 +27,30 @@ class ReactiveUserDefault<T: Codable> {
             return
         }
         let encoder = JSONEncoder()
-        if let data = try? encoder.encode(value) {
-            userDefault.set(data, forKey: key)
-            relay.accept(value)
+        do {
+            let data = try encoder.encode(value)
+            DispatchQueue.main.async {
+                self.userDefault.set(data, forKey: self.key)
+                UserDefaults.standard.synchronize()
+                self.relay.accept(value)
+            }
+        } catch {
+            print(error.localizedDescription)
         }
         
     }
     
     func clear() {
         userDefault.removeObject(forKey: key)
+    }
+    
+    func load() -> T? {
+        if let data = userDefault.value(forKey: key) as? Data {
+            let object = try? JSONDecoder().decode(T.self, from: data)
+            return object
+        }
+        
+        return nil
     }
     
     static func load<U: Decodable>(type: U.Type, key: String, userDefault: UserDefaults) -> U? {

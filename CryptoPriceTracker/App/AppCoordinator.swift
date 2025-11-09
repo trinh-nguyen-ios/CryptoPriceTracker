@@ -7,22 +7,34 @@
 
 import UIKit
 
-class AppCoordinator {
+protocol AppCoordinatorType {
+    func start()
+    func navigateTo(screen: AppScreen)
+}
+
+enum AppScreen {
+    case priceList
+}
+
+class AppCoordinator: AppCoordinatorType {
     let window: UIWindow
+    let appDIContainer: AppDIContainer
     
-    init(window: UIWindow) {
+    init(window: UIWindow, appDIContainer: AppDIContainer) {
         self.window = window
+        self.appDIContainer = appDIContainer
     }
     
     func start() {
-        toPriceList()
+        navigateTo(screen: .priceList)
     }
     
-    func toPriceList() {
-        let viewModel = PriceListViewModel(useCase: FetchUSDPriceListUseCase(repository: PriceListRepositoryImpl()))
-        
-        guard let viewController = PriceListViewController.instantiate(viewModel: viewModel) else { return }
-        window.rootViewController = UINavigationController(rootViewController: viewController)
-        window.makeKeyAndVisible()
+    func navigateTo(screen: AppScreen) {
+        switch screen {
+        case .priceList:
+            let priceListDIContainer = appDIContainer.createPriceListDIContainer()
+            let coordinator = priceListDIContainer.createPriceListCoordinator(window: window)
+            coordinator.start()
+        }
     }
 }

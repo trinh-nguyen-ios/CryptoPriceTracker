@@ -7,15 +7,19 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 final class PriceListViewController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     // MARK: Properties
     var viewModel: PriceListViewModel?
-    var priceList: [Crypto] = []
+    var priceList: [PriceListModel] = []
     let disposeBag = DisposeBag()
+    private let toogleWatchedList = PublishSubject<Crypto>()
+    private let tapCell = PublishSubject<Crypto>()
     
     static func instantiate(viewModel: PriceListViewModel, storyboardName: String = "PriceList") -> PriceListViewController? {
         let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
@@ -42,16 +46,19 @@ final class PriceListViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UINib(nibName: "PriceListTableViewCell", bundle: nil), forCellReuseIdentifier: "CryptoCell")
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
     private func bindViewModel() {
-        let input = PriceListViewModel.Input(loadTrigger: Observable.just(()))
+        let searchTrigger = Observable.merge([Observable.just(""),  searchBar.rx.text.orEmpty.asObservable()])
+        let input = PriceListViewModel.Input(searchTrigger: searchTrigger, toggleWatchedList: toogleWatchedList.asObservable(), tapCell: tapCell.asObservable())
         
         guard let output = viewModel?.transForm(input: input) else { return }
         
         output.cryptoList.asObservable()
-            .subscribe(onNext: { cryptoList in
-                self.priceList = cryptoList
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { model in
+                self.priceList = model
                 self.tableView.reloadData()
             })
             .disposed(by: disposeBag)
@@ -77,11 +84,21 @@ extension PriceListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CryptoCell", for: indexPath) as? PriceListTableViewCell
-        let name = priceList[indexPath.row].name
-        let price = priceList[indexPath.row].usd.description
+        let model = priceList[indexPath.row]
         
-        cell?.set(name: name, price: price)
+        cell?.set(name: model.crypto.name, price: model.crypto.usd.description, isWatchList: model.isWatchedList)
+        cell?.onSaveAction = { [weak self] in
+            self?.toogleWatchedList.onNext(model.crypto)
+        }
         return cell ?? UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tapCell.onNext(priceList[indexPath.row].crypto)
     }
 }
 

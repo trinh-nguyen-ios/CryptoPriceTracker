@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Crypto {
+struct Crypto: Codable {
     let id: Int
     let name: String
     let usd: Double

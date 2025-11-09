@@ -18,3 +18,7 @@ struct UsdCryptoDTO: Codable {
     let usd: Double
     let tags: [String]
 }
+
+struct UsdPricesResponse {
+    
+}
