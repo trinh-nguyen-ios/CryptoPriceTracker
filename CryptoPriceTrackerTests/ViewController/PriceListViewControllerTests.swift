@@ -10,7 +10,7 @@ import RxSwift
 @testable import CryptoPriceTracker
 
 final class PriceListViewControllerTests: XCTestCase {
-
+    
     var viewModel: MockPriceListViewModel!
     var viewController: PriceListViewController!
     
@@ -19,7 +19,7 @@ final class PriceListViewControllerTests: XCTestCase {
         viewController = PriceListViewController.instantiate(viewModel: viewModel)
         _ = viewController.view
     }
-
+    
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
@@ -29,10 +29,10 @@ final class PriceListViewControllerTests: XCTestCase {
         viewModel.emitCrypto()
         
         // then
-      let result =  viewController.tableView.numberOfRows(inSection: 0) == 1
+        let result =  viewController.tableView.numberOfRows(inSection: 0) == 1
         XCTAssertEqual(result, true)
     }
-
+    
 }
 
 

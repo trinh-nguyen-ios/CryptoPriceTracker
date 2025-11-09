@@ -17,14 +17,14 @@ class PriceListRepositoryImpl: CryptoRepository {
     
     func fetchAllPrices() -> Observable<[Crypto]> {
         guard let allPriceList: AllPricesResponseDTO = jsonLoader.loadJSON(filename: "allPrices") else {
-            return Observable.error(NSError(domain: "Can't load jon", code: -1) as Error)
+            return Observable.error(NSError(domain: "Can't load json", code: -1) as Error)
         }
         return Observable.just(allPriceList.data.map { $0.toDomain() })
     }
     
     func fetchUsdPrices() -> Observable<[Crypto]> {
-        guard let allPriceList: AllPricesResponseDTO = jsonLoader.loadJSON(filename: "usdPrices") else {
-            return Observable.error(NSError(domain: "Can't load jon", code: -1) as Error)
+        guard let allPriceList: UsdPricesResponseDTO = jsonLoader.loadJSON(filename: "usdPrices") else {
+            return Observable.error(NSError(domain: "Can't load json", code: -1) as Error)
         }
         return Observable.just(allPriceList.data.map { $0.toDomain() })
     }

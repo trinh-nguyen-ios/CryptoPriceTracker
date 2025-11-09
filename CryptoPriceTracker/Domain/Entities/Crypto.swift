@@ -14,8 +14,3 @@ struct Crypto {
     let eur: Double?
     let tags: [String]
 }
-
-extension Crypto {
-    var supportsDeposit: Bool { tags.contains("deposit") }
-    var supportsWithdrawal: Bool { tags.contains("withdrawal") }
-}
