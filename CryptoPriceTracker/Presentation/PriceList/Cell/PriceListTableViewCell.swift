@@ -11,10 +11,8 @@ final class PriceListTableViewCell: UITableViewCell {
     // MARK: Outlets
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var priceLabel: UILabel!
-    @IBOutlet private weak var saveButton: UIButton!
     
     // MARK: Properties
-    var onSaveAction: (() -> Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,13 +22,8 @@ final class PriceListTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func set(name: String, price: String, isWatchList: Bool) {
+    func set(name: String, price: String) {
         self.nameLabel.text = name
         self.priceLabel.text = "$" + price
-        self.saveButton.setImage(UIImage(systemName: isWatchList ?  "heart.fill" : "heart"), for: .normal)
-    }
-    
-    @IBAction func saveButtonHandleTapped(_ sender: Any) {
-        onSaveAction?()
     }
 }

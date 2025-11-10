@@ -12,14 +12,11 @@ import RxCocoa
 final class PriceListViewController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
     
     // MARK: Properties
     var viewModel: PriceListViewModelType?
     var priceList: [PriceListModel] = []
     let disposeBag = DisposeBag()
-    private let toogleWatchedList = PublishSubject<Crypto>()
-    private let tapCell = PublishSubject<Crypto>()
     
     static func instantiate(viewModel: PriceListViewModelType, storyboardName: String = "PriceList") -> PriceListViewController? {
         let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
@@ -50,8 +47,7 @@ final class PriceListViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        let searchTrigger = Observable.merge([Observable.just(""),  searchBar.rx.text.orEmpty.asObservable()])
-        let input = PriceListViewModel.Input(searchTrigger: searchTrigger, toggleWatchedList: toogleWatchedList.asObservable(), tapCell: tapCell.asObservable())
+        let input = PriceListViewModel.Input(loadTrigger: Observable.just(""))
         
         guard let output = viewModel?.transForm(input: input) else { return }
         
@@ -86,19 +82,13 @@ extension PriceListViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CryptoCell", for: indexPath) as? PriceListTableViewCell
         let model = priceList[indexPath.row]
         
-        cell?.set(name: model.crypto.name, price: model.crypto.usd.description, isWatchList: model.isWatchedList)
-        cell?.onSaveAction = { [weak self] in
-            self?.toogleWatchedList.onNext(model.crypto)
-        }
+        cell?.set(name: model.crypto.name, price: model.crypto.usd.description)
+        
         return cell ?? UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tapCell.onNext(priceList[indexPath.row].crypto)
     }
 }
 

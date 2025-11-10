@@ -12,9 +12,7 @@ protocol PriceListCoordinatorType {
     func navigateTo(screen: PriceListScreen)
 }
 
-enum PriceListScreen {
-    case priceListDetail
-}
+enum PriceListScreen {}
 
 class PriceListCoordinator: PriceListCoordinatorType {
     let window: UIWindow
@@ -34,11 +32,5 @@ class PriceListCoordinator: PriceListCoordinatorType {
         window.makeKeyAndVisible()
     }
     
-    func navigateTo(screen: PriceListScreen) {
-        switch screen {
-        case .priceListDetail:
-            guard let viewController = dependencies.createPriceDetailViewController() else { return }
-            navigation.pushViewController(viewController, animated: true)
-        }
-    }
+    func navigateTo(screen: PriceListScreen) {}
 }

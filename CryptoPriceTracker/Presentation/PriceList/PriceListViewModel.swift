@@ -15,9 +15,7 @@ protocol PriceListViewModelType {
 
 class PriceListViewModel: PriceListViewModelType {
     struct Input {
-        let searchTrigger: Observable<String>
-        let toggleWatchedList: Observable<Crypto>
-        let tapCell: Observable<Crypto>
+        let loadTrigger: Observable<String>
     }
     
     struct Output {
@@ -25,20 +23,14 @@ class PriceListViewModel: PriceListViewModelType {
         let error: Driver<String>
         let isLoading: Driver<Bool>
     }
+    
     let coordinator: PriceListCoordinatorType
-
-    let searchUseCase: SearchCryptoUseCaseType
-    let addWatchedListUseCase: AddWatchedListUseCaseType
-    let removeWatchListUseCase: RemoveWatchedListUseCaseType
-    let fetchWatchedListUseCase: FetchWatchedListUseCaseType
+    let fetchUSDPriceListUseCase: FetchUSDPriceListUseCaseType
     let disposeBag = DisposeBag()
     
-    init(coordinator: PriceListCoordinatorType, searchUseCase: SearchCryptoUseCaseType, addWatchedListUseCase: AddWatchedListUseCaseType, removeWatchListUseCase: RemoveWatchedListUseCaseType, fetchWatchedListUseCase: FetchWatchedListUseCaseType) {
+    init(coordinator: PriceListCoordinatorType, fetchUSDPriceListUseCase: FetchUSDPriceListUseCaseType) {
         self.coordinator = coordinator
-        self.searchUseCase = searchUseCase
-        self.addWatchedListUseCase = addWatchedListUseCase
-        self.removeWatchListUseCase = removeWatchListUseCase
-        self.fetchWatchedListUseCase = fetchWatchedListUseCase
+        self.fetchUSDPriceListUseCase = fetchUSDPriceListUseCase
     }
     
     func transForm(input: Input) -> Output {
@@ -46,12 +38,10 @@ class PriceListViewModel: PriceListViewModelType {
         let loadingSubject = PublishSubject<Bool>()
         
         
-        let cryptoList = input.searchTrigger
-            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
+        let cryptoList = input.loadTrigger
             .flatMapLatest { query -> Observable<[Crypto]>  in
                 loadingSubject.onNext(true)
-                return self.searchUseCase.execute(query: query)
+                return self.fetchUSDPriceListUseCase.execute()
                     .do(onNext: {_ in
                         loadingSubject.onNext(false)
                     }, onError: { error in
@@ -60,50 +50,13 @@ class PriceListViewModel: PriceListViewModelType {
                     })
                     .catchAndReturn([])
             }
-        
-        let watchedList = BehaviorRelay<[Crypto]>(value: [])
-        
-        fetchWatchedListUseCase.execute()
-            .observe(on: MainScheduler.instance)
-            .bind(to: watchedList)
-            .disposed(by: disposeBag)
-        
-        let combined = Observable.combineLatest(cryptoList, watchedList)
-            .map { all, watched in
+            .map { all in
                 all.map { crypto in
-                    PriceListModel(crypto: crypto, isWatchedList: watched.contains(where: {$0.id == crypto.id}))
+                    PriceListModel(crypto: crypto)
                 }
             }
         
-        input.toggleWatchedList
-            .withLatestFrom(watchedList) { toggle, watched in
-                (toggle, watched)
-            }
-            .flatMapLatest { [weak self] toggle, watchedList -> Observable<[Crypto]> in
-                guard let self else { return .empty() }
-                
-                if watchedList.contains(where: { $0.id == toggle.id }) {
-                    return self.removeWatchListUseCase.execute(crypto: toggle)
-                        .flatMap{ self.fetchWatchedListUseCase.execute() }
-                } else {
-                    return self.addWatchedListUseCase.execute(crypto: toggle)
-                        .flatMap{ self.fetchWatchedListUseCase.execute() }
-                }
-            }
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { cryptoList in
-                watchedList.accept(cryptoList)
-            })
-            .disposed(by: disposeBag)
-        
-        input.tapCell
-            .subscribe(onNext: { [weak self] _ in
-                self?.coordinator.navigateTo(screen: .priceListDetail)
-            })
-            .disposed(by: disposeBag)
-        
-        
-        return Output(cryptoList: combined.asDriver(onErrorJustReturn: []),
+        return Output(cryptoList: cryptoList.asDriver(onErrorJustReturn: []),
                       error: errorSubject.asDriver(onErrorJustReturn: ""),
                       isLoading: loadingSubject.asDriver(onErrorJustReturn: false)
         )

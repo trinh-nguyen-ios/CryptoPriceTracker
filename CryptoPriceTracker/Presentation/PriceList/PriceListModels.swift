@@ -9,5 +9,4 @@ import Foundation
 
 struct PriceListModel {
     let crypto: Crypto
-    let isWatchedList: Bool
 }

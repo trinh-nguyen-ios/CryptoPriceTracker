@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-protocol CryptoRepository {
+protocol CryptoPriceRepository {
     func fetchUsdPrices() -> Observable<[Crypto]>
     func fetchAllPrices() -> Observable<[Crypto]>
 }

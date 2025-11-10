@@ -13,9 +13,9 @@ protocol FetchUSDPriceListUseCaseType {
 }
 
 class FetchUSDPriceListUseCase: FetchUSDPriceListUseCaseType {
-    let repository: CryptoRepository
+    let repository: CryptoPriceRepository
     
-    init(repository: CryptoRepository) {
+    init(repository: CryptoPriceRepository) {
         self.repository = repository
     }
     

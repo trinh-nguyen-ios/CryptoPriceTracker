@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-class PriceListRepositoryImpl: CryptoRepository {
+class CryptoPriceRepositoryImpl: CryptoPriceRepository {
     let jsonLoader: JSONLoader
     
     init(jsonLoader: JSONLoader = BundleJSONLoader()) {

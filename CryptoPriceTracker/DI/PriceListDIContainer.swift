@@ -9,7 +9,6 @@ import UIKit
 
 protocol PriceListDIContainerType {
     func createPriceListViewController(coordinator: PriceListCoordinatorType) -> PriceListViewController?
-    func createPriceDetailViewController() -> PriceDetailViewController?
 }
 
 class PriceListDIContainer: PriceListDIContainerType {
@@ -26,35 +25,16 @@ class PriceListDIContainer: PriceListDIContainerType {
     }
     
     func createPriceListViewModel(coordinator: PriceListCoordinatorType) -> PriceListViewModel {
-        PriceListViewModel(coordinator: coordinator, searchUseCase: createSearchCryptoUseCase(), addWatchedListUseCase: createAddWatchedListUseCase(), removeWatchListUseCase: createRemoveWatchedListUseCase(), fetchWatchedListUseCase: createFetchWatchedListUseCase())
+        PriceListViewModel(coordinator: coordinator, fetchUSDPriceListUseCase: createFetchUSDCryptoUseCase())
     }
     
-    func createSearchCryptoUseCase() -> SearchCryptoUseCaseType {
-        SearchCryptoUseCase(repository: createPriceListRepository())
+    func createFetchUSDCryptoUseCase() -> FetchUSDPriceListUseCaseType {
+        FetchUSDPriceListUseCase(repository: createPriceListRepository())
     }
     
-    func createAddWatchedListUseCase() -> AddWatchedListUseCaseType {
-        AddWatchedListUseCase(repository: createWatchListRepository())
-    }
     
-    func createFetchWatchedListUseCase() -> FetchWatchedListUseCaseType {
-        FetchWatchedListUseCase(repository: createWatchListRepository())
-    }
-    
-    func createRemoveWatchedListUseCase() -> RemoveWatchedListUseCaseType {
-        RemoveWatchedListUseCase(repository: createWatchListRepository())
-    }
-    
-    func createPriceListRepository() -> PriceListRepositoryImpl {
-        PriceListRepositoryImpl(jsonLoader: BundleJSONLoader())
-    }
-    
-    func createWatchListRepository() -> WatchedListRepository {
-        WatchedListRepositoryImpl(userDefault: createUserDefault())
-    }
-    
-    func createPriceDetailViewController() -> PriceDetailViewController? {
-        PriceDetailViewController.init()
+    func createPriceListRepository() -> CryptoPriceRepository {
+        CryptoPriceRepositoryImpl(jsonLoader: BundleJSONLoader())
     }
     
     func createPriceListCoordinator(window: UIWindow, navigation: UINavigationController) -> PriceListCoordinator {

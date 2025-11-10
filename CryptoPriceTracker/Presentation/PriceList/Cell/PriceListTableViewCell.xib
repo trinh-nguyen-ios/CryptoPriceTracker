@@ -28,18 +28,6 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9KE-gF-rBg">
-                        <rect key="frame" x="372" y="27.666666666666671" width="32" height="32"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="32" id="AZ4-47-muc"/>
-                            <constraint firstAttribute="height" constant="32" id="k8I-8r-vVd"/>
-                        </constraints>
-                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                        <state key="normal" image="heart" catalog="system"/>
-                        <connections>
-                            <action selector="saveButtonHandleTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="FeF-Tr-xvb"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="yn1-JM-ikw" firstAttribute="top" secondItem="TVS-8b-8RN" secondAttribute="bottom" constant="4" id="UQe-42-jyl"/>
@@ -47,20 +35,14 @@
                     <constraint firstItem="TVS-8b-8RN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="32" id="ePJ-ny-d1q"/>
                     <constraint firstItem="yn1-JM-ikw" firstAttribute="leading" secondItem="TVS-8b-8RN" secondAttribute="leading" id="gf6-Tb-75a"/>
                     <constraint firstAttribute="bottom" secondItem="yn1-JM-ikw" secondAttribute="bottom" constant="12" id="moH-wh-1G6"/>
-                    <constraint firstItem="9KE-gF-rBg" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="otC-qN-iuY"/>
-                    <constraint firstAttribute="trailing" secondItem="9KE-gF-rBg" secondAttribute="trailing" constant="24" id="qZS-Vj-Ibk"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="nameLabel" destination="TVS-8b-8RN" id="8IE-hV-YBo"/>
                 <outlet property="priceLabel" destination="yn1-JM-ikw" id="k5F-a9-K8w"/>
-                <outlet property="saveButton" destination="9KE-gF-rBg" id="Dxe-ae-CJZ"/>
             </connections>
             <point key="canvasLocation" x="213.74045801526717" y="13.732394366197184"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="heart" catalog="system" width="128" height="107"/>
-    </resources>
 </document>
