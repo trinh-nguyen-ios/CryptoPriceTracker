@@ -15,13 +15,13 @@ final class PriceListViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     
     // MARK: Properties
-    var viewModel: PriceListViewModel?
+    var viewModel: PriceListViewModelType?
     var priceList: [PriceListModel] = []
     let disposeBag = DisposeBag()
     private let toogleWatchedList = PublishSubject<Crypto>()
     private let tapCell = PublishSubject<Crypto>()
     
-    static func instantiate(viewModel: PriceListViewModel, storyboardName: String = "PriceList") -> PriceListViewController? {
+    static func instantiate(viewModel: PriceListViewModelType, storyboardName: String = "PriceList") -> PriceListViewController? {
         let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
         guard let vc = storyboard.instantiateInitialViewController() as? PriceListViewController else {
             return nil

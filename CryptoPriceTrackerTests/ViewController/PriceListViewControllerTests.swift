@@ -7,6 +7,8 @@
 
 import XCTest
 import RxSwift
+import RxCocoa
+
 @testable import CryptoPriceTracker
 
 final class PriceListViewControllerTests: XCTestCase {
@@ -15,9 +17,8 @@ final class PriceListViewControllerTests: XCTestCase {
     var viewController: PriceListViewController!
     
     override func setUpWithError() throws {
-        viewModel = MockPriceListViewModel(useCase: MockFetchUSDPriceUseCase())
+        viewModel = MockPriceListViewModel()
         viewController = PriceListViewController.instantiate(viewModel: viewModel)
-        _ = viewController.view
     }
     
     override func tearDownWithError() throws {
@@ -26,7 +27,7 @@ final class PriceListViewControllerTests: XCTestCase {
     
     func test_load_trigger_show_crypto_list() {
         //given
-        viewModel.emitCrypto()
+        _ = viewController.view
         
         // then
         let result =  viewController.tableView.numberOfRows(inSection: 0) == 1
@@ -36,16 +37,12 @@ final class PriceListViewControllerTests: XCTestCase {
 }
 
 
-class MockPriceListViewModel: PriceListViewModel {
-    var crypto = PublishSubject<[Crypto]>()
-    var errorSubject = PublishSubject<String>()
-    var loadingSubject = BehaviorSubject<Bool>(value: false)
+class MockPriceListViewModel: PriceListViewModelType {
+    var didCallTransform: Bool = false
     
-    override func transForm(input: PriceListViewModel.Input) -> PriceListViewModel.Output {
-        return Output(cryptoList: crypto.asDriver(onErrorJustReturn: []), error: errorSubject.asDriver(onErrorJustReturn: ""), isLoading: loadingSubject.asDriver(onErrorJustReturn: false))
-    }
-    
-    func emitCrypto() {
-        crypto.onNext([.init(id: 1, name: "BTC", usd: 1000, eur: nil, tags: ["Tag1"])])
+    func transForm(input: PriceListViewModel.Input) -> PriceListViewModel.Output {
+        didCallTransform = true
+        let cryptoList: [PriceListModel] = [.init(crypto: .init(id: 1, name: "BTC", usd: 1000, eur: 800, tags: ["tag1"]), isWatchedList: false)]
+        return PriceListViewModel.Output(cryptoList: Driver.just(cryptoList), error: Driver.empty(), isLoading:  Driver.empty())
     }
 }

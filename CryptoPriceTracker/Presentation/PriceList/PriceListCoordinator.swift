@@ -18,25 +18,27 @@ enum PriceListScreen {
 
 class PriceListCoordinator: PriceListCoordinatorType {
     let window: UIWindow
-    let dependencies: PriceListDIContainer
+    let dependencies: PriceListDIContainerType
+    let navigation: UINavigationController
     
-    init(window: UIWindow, dependencies: PriceListDIContainer) {
+    init(window: UIWindow, dependencies: PriceListDIContainerType, navigation: UINavigationController) {
         self.window = window
         self.dependencies = dependencies
+        self.navigation = navigation
     }
     
     func start() {
         guard let viewController = dependencies.createPriceListViewController(coordinator: self) else { return }
-        window.rootViewController = UINavigationController(rootViewController: viewController)
+        navigation.viewControllers = [viewController]
+        window.rootViewController = navigation
         window.makeKeyAndVisible()
     }
     
     func navigateTo(screen: PriceListScreen) {
         switch screen {
         case .priceListDetail:
-            let viewController = PriceDetailViewController.init()
-            window.rootViewController = UINavigationController(rootViewController: viewController)
-            window.makeKeyAndVisible()
+            guard let viewController = dependencies.createPriceDetailViewController() else { return }
+            navigation.pushViewController(viewController, animated: true)
         }
     }
 }

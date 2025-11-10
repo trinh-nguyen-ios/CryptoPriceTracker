@@ -9,7 +9,11 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class PriceListViewModel {
+protocol PriceListViewModelType {
+    func transForm(input: PriceListViewModel.Input) -> PriceListViewModel.Output
+}
+
+class PriceListViewModel: PriceListViewModelType {
     struct Input {
         let searchTrigger: Observable<String>
         let toggleWatchedList: Observable<Crypto>

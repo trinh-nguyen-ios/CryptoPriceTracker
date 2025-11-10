@@ -15,12 +15,12 @@ import RxBlocking
 final class FetchUSDPriceListUseCaseTests: XCTestCase {
     
     var repository: CryptoRepository?
-    var useCase: FetchAllPriceUseCaseType?
+    var useCase: FetchUSDPriceListUseCaseType?
     
     override func setUp() {
         super.setUp()
         repository = MockCryptoRepository()
-        useCase = FetchAllPriceUseCase(repository: repository!)
+        useCase = FetchUSDPriceListUseCase(repository: repository!)
     }
     
     override func tearDown() {

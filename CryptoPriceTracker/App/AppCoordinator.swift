@@ -19,10 +19,12 @@ enum AppScreen {
 class AppCoordinator: AppCoordinatorType {
     let window: UIWindow
     let appDIContainer: AppDIContainer
+    let navigation: UINavigationController
     
-    init(window: UIWindow, appDIContainer: AppDIContainer) {
+    init(window: UIWindow, appDIContainer: AppDIContainer, navigation: UINavigationController) {
         self.window = window
         self.appDIContainer = appDIContainer
+        self.navigation = navigation
     }
     
     func start() {
@@ -33,7 +35,7 @@ class AppCoordinator: AppCoordinatorType {
         switch screen {
         case .priceList:
             let priceListDIContainer = appDIContainer.createPriceListDIContainer()
-            let coordinator = priceListDIContainer.createPriceListCoordinator(window: window)
+            let coordinator = priceListDIContainer.createPriceListCoordinator(window: window, navigation: navigation)
             coordinator.start()
         }
     }

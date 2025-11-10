@@ -7,7 +7,12 @@
 
 import UIKit
 
-class PriceListDIContainer {
+protocol PriceListDIContainerType {
+    func createPriceListViewController(coordinator: PriceListCoordinatorType) -> PriceListViewController?
+    func createPriceDetailViewController() -> PriceDetailViewController?
+}
+
+class PriceListDIContainer: PriceListDIContainerType {
     static let shared = PriceListDIContainer()
     
     init() {}
@@ -48,7 +53,11 @@ class PriceListDIContainer {
         WatchedListRepositoryImpl(userDefault: createUserDefault())
     }
     
-    func createPriceListCoordinator(window: UIWindow) -> PriceListCoordinator {
-        PriceListCoordinator(window: window, dependencies: self)
+    func createPriceDetailViewController() -> PriceDetailViewController? {
+        PriceDetailViewController.init()
+    }
+    
+    func createPriceListCoordinator(window: UIWindow, navigation: UINavigationController) -> PriceListCoordinator {
+        PriceListCoordinator(window: window, dependencies: self, navigation: navigation)
     }
 }
