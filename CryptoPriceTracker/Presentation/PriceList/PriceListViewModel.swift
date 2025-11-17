@@ -39,7 +39,8 @@ class PriceListViewModel: PriceListViewModelType {
         
         
         let cryptoList = input.loadTrigger
-            .flatMapLatest { query -> Observable<[Crypto]>  in
+            .flatMapLatest { [weak self] query -> Observable<[Crypto]>  in
+                guard let self else { return .empty() }
                 loadingSubject.onNext(true)
                 return self.fetchUSDPriceListUseCase.execute()
                     .do(onNext: {_ in
